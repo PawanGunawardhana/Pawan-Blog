@@ -1,31 +1,46 @@
-import { useState, useEffect } from 'react';
-import BlogList from './BlogList';
+import { useState, useEffect } from "react";
+import BlogList from "./BlogList";
 
 const Home = () => {
+  const [blogs, setBlogs] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
 
-   const [blogs, setBlogs] = useState(null);
-    
-    useEffect(() => {
-    console.log('user effect ran');
+  useEffect(() => {
+    console.log("user effect ran");
     console.log(blogs);
-    fetch("http://localhost:8000/blogs")
-    .then((res) => {
-        return res.json();
+    setTimeout(() => {
+      fetch("http://localhost:8000/blogs")
+        .then((res) => {
+          console.log(res);
+          if (!res.ok) {
+            throw Error("Failed to fetch data from that API");
+          }
+          return res.json();
         })
         .then((data) => {
-            console.log(data);
-            setBlogs(data);
+          console.log(data);
+          setBlogs(data);
+          setIsPending(false);
+          setError(null);
         })
-    }, []);
+        .catch((err) => {
+          console.error(err);
+          setError(err.message);
+          setIsPending(false);
+        });
+    }, 1000);
+  }, []);
 
-    return ( 
-        <div className="home">
-          {blogs && <BlogList blogs = {blogs} title = "All Blogs"/>}
-           
-        </div>
-    );
-}
- 
+  return (
+    <div className="home">
+      {isPending && <div>Loading...</div>}
+      {error && <div>{error}</div>}
+      {blogs && <BlogList blogs={blogs} title="All Blogs" />}
+    </div>
+  );
+};
+
 export default Home;
 
 // const handleClickAgain = (x)=> {
@@ -44,6 +59,6 @@ export default Home;
 // <p>My name is {name} and I'm {age} years old</p>
 /* <button onClick={handleClick}>Click Me</button> */
 
-    //let filterBlogs = blogs.filter((blog) => blog.author === "pawan" );
-    // <button onClick={(() => setName('vidun'))}>Click Here</button>       
-//  <p>{ name }</p> 
+//let filterBlogs = blogs.filter((blog) => blog.author === "pawan" );
+// <button onClick={(() => setName('vidun'))}>Click Here</button>
+//  <p>{ name }</p>
