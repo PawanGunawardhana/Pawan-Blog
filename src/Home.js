@@ -3,36 +3,25 @@ import BlogList from './BlogList';
 
 const Home = () => {
 
-   const [blogs, setBlogs] = useState([
-    { title: 'My new website', body: 'lorem ipsum...', author: 'pawan', id: 1 },
-    { title: 'Welcome party!', body: 'lorem ipsum...', author: 'vidun', id: 2 },
-    { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'pawan', id: 3 }
-   ]);
-
-   const [name, setName] = useState('pawan');
-
-   function handleDelete(id) {
-    const unDeletedBlogs = blogs.filter((blog) => blog.id !== id );
-    setBlogs(unDeletedBlogs);
-
-   }
+   const [blogs, setBlogs] = useState(null);
     
-   let filterBlogs = blogs.filter((blog) => blog.author === "pawan" );
-
-   useEffect(() => {
+    useEffect(() => {
     console.log('user effect ran');
     console.log(blogs);
-    console.log(name);
-  
-   }, [name]);
+    fetch("http://localhost:8000/blogs")
+    .then((res) => {
+        return res.json();
+        })
+        .then((data) => {
+            console.log(data);
+            setBlogs(data);
+        })
+    }, []);
 
     return ( 
         <div className="home">
-           <BlogList blogs = {blogs} title = "All Blogs" handleDelete = {handleDelete} />
-           <BlogList blogs = {filterBlogs} title = "Pawan's Blogs" handleDelete = {handleDelete}/>
-           <button onClick={(() => setName('vidun'))}>Click Here</button>
-           <p>{ name }</p>
-
+          {blogs && <BlogList blogs = {blogs} title = "All Blogs"/>}
+           
         </div>
     );
 }
@@ -54,3 +43,7 @@ export default Home;
 
 // <p>My name is {name} and I'm {age} years old</p>
 /* <button onClick={handleClick}>Click Me</button> */
+
+    //let filterBlogs = blogs.filter((blog) => blog.author === "pawan" );
+    // <button onClick={(() => setName('vidun'))}>Click Here</button>       
+//  <p>{ name }</p> 
