@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BlogList from './BlogList';
 
 const Home = () => {
@@ -6,13 +6,28 @@ const Home = () => {
    const [blogs, setBlogs] = useState([
     { title: 'My new website', body: 'lorem ipsum...', author: 'pawan', id: 1 },
     { title: 'Welcome party!', body: 'lorem ipsum...', author: 'vidun', id: 2 },
-    { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'kalpa', id: 3 }
+    { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'pawan', id: 3 }
    ]);
+
+
+   function handleDelete(id) {
+    const unDeletedBlogs = blogs.filter((blog) => blog.id !== id );
+    setBlogs(unDeletedBlogs);
+
+   }
     
+   let filterBlogs = blogs.filter((blog) => blog.author === "pawan" );
+
+   useEffect(() => {
+    console.log('user effect ran');
+    console.log(blogs);
+    console.log(filterBlogs);
+   })
 
     return ( 
         <div className="home">
-           <BlogList blogs = {blogs} title = "All Blogs"/>
+           <BlogList blogs = {blogs} title = "All Blogs" handleDelete = {handleDelete} />
+           <BlogList blogs = {filterBlogs} title = "Pawan's Blogs" handleDelete = {handleDelete}/>
         </div>
     );
 }
