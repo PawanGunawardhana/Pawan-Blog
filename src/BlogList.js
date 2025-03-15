@@ -12,7 +12,6 @@ const BlogList = (/*can use prop word also*/{blogs,title,handleDelete}) => {
                     <h2>{blog.title}</h2>
                     <p>Written by {blog.author}</p>
                     <button onClick={() => {handleDelete(blog.id)}}>Delete Blog</button>
-
                 </div>
             ))}
        </div> 
