@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("Pawan");
   const [isPending, setIsPending] = useState(false);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,27 +14,33 @@ const Create = () => {
 
     setIsPending(true);
 
-    const f= fetch("http://localhost:8000/blogs", {
+    const f = fetch("http://localhost:8000/blogs", {
       method: "POST",
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
       },
-      body: JSON.stringify(blog)
-    }).then((res) => {
-      if (res.ok) {
-        console.log("Blog created");
-        setIsPending(false);
-        console.log(res.json);
-        return res.json;
-      } else {
-        console.log("Blog not created");
-        return Error("Blog not created");
-      }
-    }).then((blog) => {
-      console.log(blog);
-    });
-    console.log((f));
-    
+      body: JSON.stringify(blog),
+    })
+      .then((res) => {
+        if (res.ok) {
+          console.log("Blog created");
+          setIsPending(false);
+          console.log(res.json);
+          // history.go(-1);
+          history.push("/");
+          return res.json;
+        } else {
+          console.log("Blog not created");
+          setIsPending(false);
+          // history.go(-1);
+          history.push("/");
+          return Error("Blog not created");
+        }
+      })
+      .then((blog) => {
+        console.log(blog);
+      });
+    console.log(f);
   };
 
   return (
