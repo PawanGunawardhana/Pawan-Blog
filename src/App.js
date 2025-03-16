@@ -3,6 +3,7 @@ import Home from "./Home";
 import Create from "./Create";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import BlogDetails from "./BlogDetails";
+import NotFound from "./NotFound"
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
             </Route>
             <Route path="/blogs/:id">
               <BlogDetails />
+            </Route>
+            <Route path="*">  {/* catch all route.this should be at the bottom o/w that will get all the input routes as notfound */}
+             <NotFound />     {/*   routes paths matching is done by top to bottom */}
             </Route>
           </Switch>
         </div>
