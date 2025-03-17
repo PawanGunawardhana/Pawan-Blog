@@ -62,7 +62,7 @@ const Create = () => {
             setBody(e.target.value);
           }}
         ></textarea>
-        <label>blog Author:</label>
+        <label>Blog Author:</label>
         <select
           value={author}
           required
